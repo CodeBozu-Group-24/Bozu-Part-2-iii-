@@ -3,7 +3,7 @@ import requests
 import csv
 import wolframalpha
 import matplotlib.pyplot as plt
-from csv import reader
+from csv import writer
 import pandas as pd
 import re
 
@@ -22,4 +22,12 @@ for row in rows:
     NameOfSource = re.sub("\n", " ",td.get_text())
     NewsSources.append(NameOfSource)
 
-print(NewsSources)
+#print(NewsSources)
+NewsSources.insert(0, 'Politician')
+
+with open('news.csv', 'w') as f:
+    writer_object = writer(f)
+    writer_object.writerow(NewsSources)
+    #for i in range(len(title_text)):
+        #writer_object.writerow([title_text[i], writings[i], positivity[i]])
+    f.close()   

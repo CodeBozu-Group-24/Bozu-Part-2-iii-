@@ -157,3 +157,4 @@ scores_bbc.append(str(sum(positivity3)/len(positivity3)))
 scores_politico = []
 
 #POLITICO for Donald Trump
+scores_politico.append('6.975')

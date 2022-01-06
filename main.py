@@ -46,7 +46,7 @@ for ele in politicians:
         politicians_reduced.append(ele)
 '''
 politicians = ['Donald Trump', 'Joe Biden', 'Barack Obama']
-scores = []
+scores_bbc = []
 
 #BBC for Donald Trump
 data1 = requests.get('https://www.bbc.com/news/topics/cp7r8vgl2lgt/donald-trump').text
@@ -74,7 +74,7 @@ for writing in writings1:
     positivity_score1 = sentiment_dict1['pos']*100
     positivity1.append(positivity_score1)
 
-scores.append(str(sum(positivity1)/len(positivity1)))
+scores_bbc.append(str(sum(positivity1)/len(positivity1)))
 
 #BBC for Joe Biden
 data2 = requests.get('https://www.bbc.co.uk/search?q=Joe+Biden').text
@@ -112,7 +112,7 @@ for writing in writings2:
     positivity_score2 = sentiment_dict2['pos']*100
     positivity2.append(positivity_score2)
 
-scores.append(str(sum(positivity2)/len(positivity2)))
+scores_bbc.append(str(sum(positivity2)/len(positivity2)))
 
 
 #BBC News for Barack Obama
@@ -143,7 +143,7 @@ for link in links3:
         writings3.append(writingFinal3)
     except AttributeError:
         writings3.append('No text existing currenly.')
-print(writings3)
+
 positivity3 = []    
 for writing in writings3:
     sid_obj3 = SentimentIntensityAnalyzer()
@@ -151,7 +151,6 @@ for writing in writings3:
     positivity_score3 = sentiment_dict3['pos']*100
     positivity3.append(positivity_score3)
 
-print(positivity3)
-scores.append(str(sum(positivity3)/len(positivity3)))
+scores_bbc.append(str(sum(positivity3)/len(positivity3)))
 
-print(scores)
+

@@ -154,3 +154,6 @@ for writing in writings3:
 scores_bbc.append(str(sum(positivity3)/len(positivity3)))
 
 
+scores_politico = []
+
+#POLITICO for Donald Trump

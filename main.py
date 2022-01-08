@@ -11,7 +11,7 @@ import re
 
 politicians = ['Donald Trump', 'Joe Biden', 'Barack Obama']
 scores_bbc = []
-'''
+
 #BBC for Donald Trump
 data1 = requests.get('https://www.bbc.com/news/topics/cp7r8vgl2lgt/donald-trump').text
 soup1 = BeautifulSoup(data1, 'lxml')
@@ -25,11 +25,12 @@ for title in titles1:
 writings1 = []
 for title in titles1:
     link = "https://www.bbc.com"+title["href"]
-    #data_new = requests.get(link).text
-    #soup_new = BeautifulSoup(data_new, 'lxml')
-    writingFinal1 = getTextFromArticle(link).encode("ascii", "ignore").decode()
-    writingFinal1 = re.sub("\n", " ", writingFinal1)
-    writings1.append(writingFinal1)
+    try:
+        writingFinal1 = getTextFromArticle(link).encode("ascii", "ignore").decode()
+        writingFinal1 = re.sub("\n", " ", writingFinal1)
+        writings1.append(writingFinal1)
+    except AttributeError:
+        writings1.append('No Text')    
 
 positivity1 = []    
 for writing in writings1:
@@ -39,9 +40,6 @@ for writing in writings1:
     positivity1.append(positivity_score1)
 
 scores_bbc.append(str(sum(positivity1)/len(positivity1)))
-'''
-scores_bbc.append('None')  #code breaking for Donald Trump
-
 
 #BBC for Joe Biden
 data2 = requests.get('https://www.bbc.co.uk/search?q=Joe+Biden').text
@@ -167,3 +165,5 @@ with open('news.csv', 'w') as f:
     for i in range(len(politicians)):
         writer_object.writerow([politicians[i], scores_bbc[i], scores_politico[i]])
     f.close()   
+
+    

@@ -8,46 +8,10 @@ import pandas as pd
 from scraper import getTextFromArticle, getMeanScores
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import re
-'''
-data = requests.get('https://en.wikipedia.org/wiki/News_media_in_the_United_States').text
-soup = BeautifulSoup(data, 'lxml')
-list1 = soup.findAll('h4')
 
-
-table = soup.find("table", {"class":"wikitable sortable"})
-rows = table.find_all("tr")
-rows = rows[1:]
-NewsSources = []
-for row in rows:
-    td = row.find("td")
-    NameOfSource = re.sub("\n", " ",td.get_text())
-    NewsSources.append(NameOfSource)
-
-#print(NewsSources)
-NewsSources.insert(0, 'Politician')
-
-with open('news.csv', 'w') as f:
-    writer_object = writer(f)
-    writer_object.writerow(NewsSources)
-    f.close()   
-
-politicians = []
-with open('details.csv', 'r') as f:
-    reader = csv.reader(f)
-    amr_csv = list(reader)
-    for row in amr_csv[1:]:
-        politicians.append(row[0])
-    f.close()
-
-#the main list of politicians without repition of names
-politicians_reduced = []
-for ele in politicians:
-    if ele not in politicians_reduced:
-        politicians_reduced.append(ele)
-'''
 politicians = ['Donald Trump', 'Joe Biden', 'Barack Obama']
 scores_bbc = []
-
+'''
 #BBC for Donald Trump
 data1 = requests.get('https://www.bbc.com/news/topics/cp7r8vgl2lgt/donald-trump').text
 soup1 = BeautifulSoup(data1, 'lxml')
@@ -75,6 +39,9 @@ for writing in writings1:
     positivity1.append(positivity_score1)
 
 scores_bbc.append(str(sum(positivity1)/len(positivity1)))
+'''
+scores_bbc.append('None')  #code breaking for Donald Trump
+
 
 #BBC for Joe Biden
 data2 = requests.get('https://www.bbc.co.uk/search?q=Joe+Biden').text
@@ -158,3 +125,45 @@ scores_politico = []
 
 #POLITICO for Donald Trump
 scores_politico.append('6.975')
+
+#POLITICO for Joe Biden
+politico_bid = []
+positivity4 = []
+data_politico = requests.get("https://www.politico.com/news/magazine/2020/03/05/biden-2020-president-facts-what-you-should-know-campaign-121422").text
+soup_politico = BeautifulSoup(data_politico, 'lxml')
+txt2 = soup_politico.findAll('p', class_='story-text__paragraph')
+#print(txt1.get_text())
+for ele in txt2:
+  politico_bid.append(ele.get_text())
+
+for elements in politico_bid:
+    sid_obj4 = SentimentIntensityAnalyzer()
+    sentiment_dict4 = sid_obj4.polarity_scores(elements)
+    positivity_score4 = sentiment_dict4['pos']*100
+    positivity4.append(positivity_score4)
+
+scores_politico.append(str(sum(positivity4)/len(positivity4)))
+
+#POLITICO for Barack Obama
+politico_ob = []
+positivity5 = []
+data_politico2 = requests.get('https://www.politico.com/story/2012/02/the-political-transformation-of-barack-obama-072644').text
+soup_politico2 = BeautifulSoup(data_politico2, 'lxml')
+txt = soup_politico2.findAll('p')
+for ele in txt:
+    politico_ob.append(ele.get_text())
+
+for elements in politico_ob:
+    sid_obj5 = SentimentIntensityAnalyzer()
+    sentiment_dict5 = sid_obj5.polarity_scores(elements)
+    positivity_score5 = sentiment_dict5['pos']*100
+    positivity5.append(positivity_score5)
+
+scores_politico.append(str(sum(positivity5)/len(positivity5)))
+
+with open('news.csv', 'w') as f:
+    writer_object = writer(f)
+    writer_object.writerow(["Politician", "BBC", "Politico"])
+    for i in range(len(politicians)):
+        writer_object.writerow([politicians[i], scores_bbc[i], scores_politico[i]])
+    f.close()   

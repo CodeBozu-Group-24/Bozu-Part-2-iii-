@@ -31,7 +31,11 @@ for title in titles1:
         writings1.append(writingFinal1)
     except AttributeError:
         writings1.append('No Text')    
-
+firstColumn = list(pd.read_csv("details.csv")["Politician"])
+for text in writings1:
+    for name in firstColumn:
+        if name in text.split():
+            writings1.remove(text)
 positivity1 = []    
 for writing in writings1:
     sid_obj1 = SentimentIntensityAnalyzer()
@@ -69,7 +73,11 @@ for link in links:
         writings2.append(writingFinal2)
     except AttributeError:
         writings2.append('No text existing currenly.')
-
+firstColumn = list(pd.read_csv("details.csv")["Politician"])
+for text in writings2:
+    for name in firstColumn:
+        if name in text.split():
+            writings2.remove(text)
 positivity2 = []    
 for writing in writings2:
     sid_obj2 = SentimentIntensityAnalyzer()
@@ -108,7 +116,11 @@ for link in links3:
         writings3.append(writingFinal3)
     except AttributeError:
         writings3.append('No text existing currenly.')
-
+firstColumn = list(pd.read_csv("details.csv")["Politician"])
+for text in writings3:
+    for name in firstColumn:
+        if name in text.split():
+            writings3.remove(text)
 positivity3 = []    
 for writing in writings3:
     sid_obj3 = SentimentIntensityAnalyzer()
@@ -117,6 +129,7 @@ for writing in writings3:
     positivity3.append(positivity_score3)
 
 scores_bbc.append(str(sum(positivity3)/len(positivity3)))
+
 
 
 scores_politico = []
@@ -133,7 +146,11 @@ txt2 = soup_politico.findAll('p', class_='story-text__paragraph')
 #print(txt1.get_text())
 for ele in txt2:
   politico_bid.append(ele.get_text())
-
+firstColumn = list(pd.read_csv("details.csv")["Politician"])
+for text in politico_bid:
+    for name in firstColumn:
+        if name in text.split():
+            politico_bid.remove(text)
 for elements in politico_bid:
     sid_obj4 = SentimentIntensityAnalyzer()
     sentiment_dict4 = sid_obj4.polarity_scores(elements)
@@ -150,7 +167,11 @@ soup_politico2 = BeautifulSoup(data_politico2, 'lxml')
 txt = soup_politico2.findAll('p')
 for ele in txt:
     politico_ob.append(ele.get_text())
-
+firstColumn = list(pd.read_csv("details.csv")["Politician"])
+for text in politico_ob:
+    for name in firstColumn:
+        if name in text.split():
+            politico_ob.remove(text)
 for elements in politico_ob:
     sid_obj5 = SentimentIntensityAnalyzer()
     sentiment_dict5 = sid_obj5.polarity_scores(elements)
@@ -158,6 +179,7 @@ for elements in politico_ob:
     positivity5.append(positivity_score5)
 
 scores_politico.append(str(sum(positivity5)/len(positivity5)))
+print(scores_politico)
 
 with open('news.csv', 'w') as f:
     writer_object = writer(f)
@@ -165,5 +187,3 @@ with open('news.csv', 'w') as f:
     for i in range(len(politicians)):
         writer_object.writerow([politicians[i], scores_bbc[i], scores_politico[i]])
     f.close()   
-
-    
